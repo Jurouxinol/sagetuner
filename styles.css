@@ -289,10 +289,7 @@ button:focus-visible { outline: 1.5px solid var(--accent); outline-offset: 3px; 
 .tempo-ctrl input::-moz-range-thumb { width: 20px; height: 20px; border-radius: 50%; background: var(--ink); border: 3px solid var(--panel); }
 .metro .group { padding: 0; }
 
-.dock.metro-only { justify-content: space-between; align-items: center; padding: 8px 18px 6px; }
-.tap, .tap-spacer { width: 64px; height: 64px; flex: none; }
-.tap { border-radius: 50%; background: var(--chip); font-size: 15px; font-weight: 600; text-align: center; }
-.tap:active { transform: scale(.94); background: var(--accent-soft); }
+.dock.metro-only { justify-content: center; align-items: center; padding: 8px 18px 6px; }
 .play {
   width: 78px; height: 78px; border-radius: 50%;
   display: grid; place-items: center;
@@ -331,6 +328,11 @@ button:focus-visible { outline: 1.5px solid var(--accent); outline-offset: 3px; 
   width: 100%; height: 50px; border-radius: 25px; margin-top: 8px;
   background: var(--ink); color: var(--on-ink); font-size: 16px; font-weight: 600; text-align: center;
 }
+
+/* Bottom-of-drawer buttons share the row; one alone fills it */
+.sheet-actions { display: flex; gap: 10px; margin-top: 8px; }
+.sheet-actions .sheet-done { flex: 1; margin-top: 0; font-size: 15px; display: grid; place-items: center; text-decoration: none; }
+.sheet-done.secondary { background: var(--chip); color: var(--ink); }
 
 .steps { list-style: none; padding: 0; margin: 22px 0 24px; display: grid; gap: 16px; }
 .steps li { display: flex; align-items: center; gap: 12px; font-size: 16px; line-height: 1.35; }

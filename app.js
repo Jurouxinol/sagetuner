@@ -623,6 +623,17 @@ function closeSettings() {
   setTimeout(() => { el.settings.hidden = true; }, 350);
 }
 
+/* ---------- Support ---------- */
+
+// Buy Me a Coffee page, shown in settings. Empty hides the button.
+const COFFEE_URL = '';
+if (COFFEE_URL) {
+  const link = $('#coffeeLink');
+  link.href = COFFEE_URL;
+  link.hidden = false;
+  link.addEventListener('click', () => track('coffee-tap'));
+}
+
 /* ---------- Analytics ---------- */
 
 // Umami Cloud website ID (cookieless, no personal data). Empty keeps analytics off
@@ -815,7 +826,7 @@ if (BROWSER === 'inapp') setTimeout(() => showInstallGuide('inapp'), 800);
 // Clicks are scheduled slightly ahead on the audio clock (a short timer tops up the
 // queue), so timing stays tight even when the main thread stutters. The beat dots are
 // drawn from the same schedule in the animation frame.
-const metro = { playing: false, next: 0, beat: 0, timer: 0, queue: [], taps: [] };
+const metro = { playing: false, next: 0, beat: 0, timer: 0, queue: [] };
 const LOOKAHEAD = 0.12;   // seconds of clicks scheduled in advance
 const TEMPO_NAMES = [[45, 'grave'], [60, 'largo'], [66, 'larghetto'], [76, 'adagio'], [108, 'andante'],
   [120, 'moderato'], [156, 'allegro'], [176, 'vivace'], [200, 'presto'], [Infinity, 'prestissimo']];
@@ -896,17 +907,6 @@ function renderBeats() {
     (o) => { state.beats = o.v; metro.beat %= o.v; persist(); renderBeats(); });
 }
 
-// Tap tempo: average the last few intervals; a pause of 2s starts over
-function tapTempo() {
-  const now = performance.now();
-  if (metro.taps.length && now - metro.taps[metro.taps.length - 1] > 2000) metro.taps = [];
-  metro.taps.push(now);
-  if (metro.taps.length > 5) metro.taps.shift();
-  if (metro.taps.length < 2) return;
-  const gaps = metro.taps.slice(1).map((t, i) => t - metro.taps[i]);
-  setBpm(60000 / (gaps.reduce((a, b) => a + b) / gaps.length));
-}
-
 // −/+ step once on press and repeat while held
 function holdToRepeat(btn, delta) {
   let timer = 0;
@@ -984,7 +984,6 @@ new ResizeObserver(resize).observe(el.field);
 applyTheme();
 el.viewBtn.addEventListener('click', () => setView(state.view === 'metronome' ? 'tuner' : 'metronome'));
 el.play.addEventListener('click', () => (metro.playing ? stopMetronome() : startMetronome()));
-$('#tapBtn').addEventListener('pointerdown', tapTempo);
 el.bpmSlider.addEventListener('input', () => setBpm(Number(el.bpmSlider.value)));
 holdToRepeat($('#bpmDown'), -1);
 holdToRepeat($('#bpmUp'), 1);

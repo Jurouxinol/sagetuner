@@ -21,7 +21,7 @@ No download, no account.
 - A soft gradient that shows the reading: it leans left when flat, right when sharp,
   and settles into sage green when you're in tune; a −50…+50 cent scale moves with it
 - Tap a string to hear its reference tone
-- **Metronome** with accented first beat, 2–6 beats per bar, tap tempo and 30–250 BPM
+- **Metronome** with accented first beat, 2–6 beats per bar and 30–250 BPM
 - Adjustable reference pitch (A4), in-tune tolerance, light/dark mode
 - Keeps the screen awake while you use it
 - Installable on iPhone, Android and desktop, with install steps for each browser
