@@ -6,6 +6,9 @@ No download, no account.
 
 **Try it: [sagetuner.vercel.app](https://sagetuner.vercel.app)**
 
+> **Do whatever you want with this project.** Copy it, change it, sell it, ship it as your own app.
+> No permission or credit needed (a link back is always appreciated, but never required).
+
 <p align="center">
   <img src="docs/screenshot-in-tune.webp" width="260" alt="sagetuner in dark mode: the A string in tune, with a sage-green glow centred in the gradient">
   &nbsp;&nbsp;
@@ -57,9 +60,9 @@ Then open http://localhost:8765. The microphone needs `localhost` or HTTPS.
 
 ## Credits
 
-- Settings icon adapted from [Feather Icons](https://feathericons.com) (MIT, © Cole Bemis)
-- McLeod Pitch Method: P. McLeod and G. Wyvill, 2005
+- McLeod Pitch Method: P. McLeod and G. Wyvill, *A Smarter Way to Find Pitch*, 2005
+- All icons and graphics were made for this project
 
 ## License
 
-MIT. See [LICENSE](LICENSE).
+[0BSD](LICENSE) (Zero-Clause BSD): use it for anything, with or without credit.

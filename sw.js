@@ -1,6 +1,6 @@
 // Network-first so updates show up on the next open; the cache keeps it working
 // offline and covers slow connections after a short wait.
-const CACHE = 'tuner-v27';
+const CACHE = 'tuner-v28';
 // Only what the app needs to run offline. The large install icons (512px, Apple touch)
 // are fetched by the OS once at install time, so keeping them here would just use space.
 const ASSETS = [
