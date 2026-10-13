@@ -63,7 +63,8 @@
   color-scheme: dark;
 }
 
-* { box-sizing: border-box; margin: 0; }
+*, *::before, *::after { box-sizing: border-box; }
+* { margin: 0; }
 [hidden] { display: none !important; }
 html, body { height: 100%; }
 body {
@@ -197,7 +198,7 @@ button:focus-visible { outline: 1.5px solid var(--accent); outline-offset: 3px; 
 }
 .needle::before {
   content: ""; position: absolute; left: 50%; top: 50%;
-  width: 14px; height: 14px; margin: -7px 0 0 -7px; border-radius: 50%;
+  width: 19px; height: 19px; margin: -9.5px 0 0 -9.5px; border-radius: 50%;   /* centred on the line, border included */
   background: var(--accent); border: 2.5px solid var(--panel);
   box-shadow: 0 0 0 10px rgba(226,96,79,.12), 0 0 24px 12px rgba(226,96,79,.14);
   transition: background .3s, box-shadow .3s;
@@ -298,7 +299,8 @@ button:focus-visible { outline: 1.5px solid var(--accent); outline-offset: 3px; 
 }
 .play:active { transform: scale(.95); }
 .play svg { width: 30px; height: 30px; fill: currentColor; }
-.play .i-play { margin-left: 4px; }
+/* Optical centring: the triangle's centroid, not its box, sits on the button's centre */
+.play .i-play { margin-left: 1.25px; }
 .play .i-stop, .play[aria-pressed="true"] .i-play { display: none; }
 .play[aria-pressed="true"] .i-stop { display: block; }
 
