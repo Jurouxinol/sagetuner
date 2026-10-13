@@ -6,3 +6,6 @@
 .claude
 
 .DS_Store
+
+# Launch video output (/brag)
+brag-output

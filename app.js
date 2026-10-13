@@ -396,16 +396,22 @@ const BLOBS = [
   ['.blob.dark-r', 0.72, 0.95, (fx, s, k, w) => [(1.0 - 0.16 * Math.max(0, -s)) * w, 0.04 + 0.3 * Math.max(0, -s), clamp(0.6 - 0.4 * s, 0.05, 1)]],
   ['.blob.glow', 0.56, 0.82, (fx, s, k, w) => [fx, 0.5, 1]],
 ].map(([sel, w, h, place], i) => ({ el: el.field.querySelector(sel), w, h, place, ph: i * 1.7, f: 0.45 + i * 0.09 }));
-const glowEl = el.field.querySelector('.blob.glow');
+const glowEl = el.field.querySelector('.blob.glow'), haloEl = el.field.querySelector('.blob.halo');
 
 // Glow colour by distance from the target: sage green → warm peach → coral red
-const GREEN = [156, 206, 174], PEACH = [240, 166, 132], CORAL = [242, 88, 76], NEUTRAL = [232, 206, 186];
+const GREEN = [64, 204, 112], PEACH = [240, 166, 132], CORAL = [242, 88, 76], NEUTRAL = [232, 206, 186];
 const smooth = (a, b, x) => { const t = clamp((x - a) / (b - a), 0, 1); return t * t * (3 - 2 * t); };
 const mix = (a, b, t) => a.map((v, i) => v + (b[i] - v) * t);
 function glowColour(cents, presence) {
   const d = Math.abs(cents);
   const col = mix(mix(GREEN, PEACH, smooth(3, 9, d)), CORAL, smooth(8, 20, d));
   return mix(NEUTRAL, col, presence).map(Math.round).join(', ');
+}
+// The cream halo behind the glow leans green near the note, so the in-tune green isn't washed out
+const HALO = [240, 200, 174], HALO_GREEN = [178, 232, 190];
+function haloColour(cents, presence) {
+  const near = presence * (1 - smooth(3, 10, Math.abs(cents)));
+  return mix(HALO, HALO_GREEN, near).map(Math.round).join(', ');
 }
 
 const fieldSize = { w: 0, h: 0 };
@@ -486,6 +492,7 @@ function draw(now) {
     b.el.style.opacity = op.toFixed(3);
   }
   glowEl.style.setProperty("--c", glowColour(meter.p * 50, meter.presence));
+  haloEl.style.setProperty('--c', haloColour(meter.p * 50, meter.presence));
   el.focal.style.transform = `translateX(${fx.toFixed(1)}px)`;
   el.needle.style.transform = `translateX(${(((meter.p + 1) / 2) * el.ticks.clientWidth).toFixed(1)}px)`;
 
