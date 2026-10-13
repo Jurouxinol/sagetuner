@@ -1,9 +1,16 @@
 # sagetuner
 
-A free instrument tuner and metronome that runs in the browser and installs like an app.
-No download, no account, works offline.
+A free guitar, bass and ukulele tuner plus metronome, built as a **PWA (progressive web app)**:
+it runs in the browser, installs to your home screen like an app, and works offline.
+No download, no account.
 
 **Try it: [sagetuner.vercel.app](https://sagetuner.vercel.app)**
+
+<p align="center">
+  <img src="docs/screenshot-in-tune.webp" width="260" alt="sagetuner in dark mode: the A string in tune, with a sage-green glow centred in the gradient">
+  &nbsp;&nbsp;
+  <img src="docs/screenshot-sharp.webp" width="260" alt="sagetuner in dark mode: the low E string 39 cents sharp, with a coral glow pushed to the right">
+</p>
 
 ## Features
 
