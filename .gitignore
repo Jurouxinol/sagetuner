@@ -1,0 +1,8 @@
+# Vercel project link and its local token: never commit
+.vercel
+.env*
+
+# Local editor/agent settings
+.claude
+
+.DS_Store

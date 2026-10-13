@@ -1,0 +1,6 @@
+.claude
+.DS_Store
+.env*
+.vercel
+.gitignore
+.vercelignore

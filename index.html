@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <title>sagetuner</title>
+  <meta name="description" content="sagetuner — a free tuner for guitar, bass and ukulele. No download, works offline.">
+  <meta name="theme-color" id="themeColor" content="#F2F1EF">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="sagetuner">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+  <link rel="stylesheet" href="styles.css">
+  <!-- Vercel Web Analytics: anonymous visitor counts, no cookies (enable it in the Vercel dashboard) -->
+  <script defer src="/_vercel/insights/script.js"></script>
+  <script>
+    // Apply a manual theme before first paint so there is no flash of the wrong one
+    try { const t = JSON.parse(localStorage.getItem('tuner') || '{}').theme; if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t; } catch {}
+  </script>
+</head>
+<body>
+  <main class="app">
+    <header class="top">
+      <div class="brand">
+        <b class="wordmark">sagetuner</b>
+        <span class="pick big metro-only" aria-hidden="true">metronome</span>
+        <label class="pick big tuner-only">
+          <span id="title">guitar</span><svg viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>
+          <select id="instrumentSelect" aria-label="Instrument"></select>
+        </label>
+        <label class="pick tuner-only" id="tuningPick">
+          <span id="subtitle">standard e</span><svg viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>
+          <select id="tuningSelect" aria-label="Tuning"></select>
+        </label>
+      </div>
+      <div class="actions">
+        <button class="view-btn" id="viewBtn" aria-label="Metronome">
+          <svg class="i-metro" viewBox="0 0 24 24" aria-hidden="true"><path d="M9.2 3.5h5.6l4.2 17H5z"/><path d="M5.9 16.5h12.2M12 16.5l5-10"/><circle cx="17.4" cy="5.6" r="1.3"/></svg>
+          <svg class="i-fork" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3v6a3 3 0 0 0 6 0V3M12 12v9"/></svg>
+        </button>
+        <button class="gear" id="openSettings" aria-label="Settings"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1.08-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1.08 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z"/></svg></button>
+      </div>
+    </header>
+
+
+    <button class="field idle tuner-only" id="field" aria-label="Start listening">
+      <span class="blob halo" aria-hidden="true"></span>
+      <span class="blob ember-l" aria-hidden="true"></span>
+      <span class="blob ember-r" aria-hidden="true"></span>
+      <span class="blob dark-b" aria-hidden="true"></span>
+      <span class="blob dark-l" aria-hidden="true"></span>
+      <span class="blob dark-r" aria-hidden="true"></span>
+      <span class="blob glow" aria-hidden="true"></span>
+      <span class="grain" aria-hidden="true"></span>
+      <i class="focal" id="focal" aria-hidden="true"><b></b></i>
+    </button>
+
+    <section class="reading tuner-only" aria-live="polite">
+      <p class="note idle" id="note"><span id="letter">E</span><sup id="oct"></sup></p>
+      <p class="hz" id="hz">— Hz</p>
+      <p class="cents" id="cents">—</p>
+      <p class="status" id="status">tap the gradient to listen</p>
+    </section>
+
+    <section class="scale tuner-only" id="scale" aria-hidden="true">
+      <div class="ticks" id="ticks"><i class="needle" id="needle"></i></div>
+      <div class="nums">
+        <span style="--p: 0">-50<small>flat</small></span>
+        <span style="--p: .25">-25</span>
+        <span style="--p: .5">0</span>
+        <span style="--p: .75">+25</span>
+        <span style="--p: 1">+50<small>sharp</small></span>
+      </div>
+    </section>
+
+    <div class="strings tuner-only" id="stringRow"></div>
+
+    <footer class="dock tuner-only">
+      <button class="mic" id="listenBtn" aria-pressed="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21" fill="none"/></svg>
+        <span id="listenLabel">mic off</span><i class="dot" aria-hidden="true"></i>
+      </button>
+      <button class="add-home" id="installBtn" hidden>
+        <img src="icons/icon-192.png" alt="" width="20" height="20">Add to home screen
+      </button>
+    </footer>
+    <section class="metro metro-only" aria-label="Metronome">
+      <div class="beats" id="beatDots" aria-hidden="true"></div>
+      <div class="tempo">
+        <p class="bpm"><span id="bpm">100</span><small>BPM</small></p>
+        <p class="tempo-name" id="tempoName">andante</p>
+      </div>
+      <div class="tempo-ctrl">
+        <button class="step" id="bpmDown" aria-label="Slower">−</button>
+        <input type="range" id="bpmSlider" min="30" max="250" step="1" value="100" aria-label="Tempo">
+        <button class="step" id="bpmUp" aria-label="Faster">+</button>
+      </div>
+      <div class="group">
+        <p class="label">Beats per bar</p>
+        <div class="seg" id="beatsSeg"></div>
+      </div>
+    </section>
+
+    <footer class="dock metro-only">
+      <button class="tap" id="tapBtn">Tap</button>
+      <button class="play" id="playBtn" aria-label="Start metronome" aria-pressed="false">
+        <svg class="i-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg>
+        <svg class="i-stop" viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="6.5" width="11" height="11" rx="2"/></svg>
+      </button>
+      <span class="tap-spacer" aria-hidden="true"></span>
+    </footer>
+  </main>
+
+  <!-- Install instructions; the steps are filled in for the visitor's browser -->
+  <section class="overlay" id="installSheet" aria-label="Add to home screen" hidden>
+    <div class="sheet">
+      <i class="grabber" aria-hidden="true"></i>
+      <p class="sheet-title" id="installTitle">Add to home screen</p>
+      <p class="sheet-sub" id="installSub">Opens full screen, works offline.</p>
+      <ol class="steps" id="installSteps"></ol>
+      <button class="sheet-done" id="installDone">Got it</button>
+    </div>
+  </section>
+
+  <section class="overlay" id="settings" aria-label="Settings" hidden>
+    <div class="sheet">
+      <i class="grabber" aria-hidden="true"></i>
+      <header class="s-top">
+        <p class="sheet-title">Settings</p>
+        <button class="done" id="closeSettings">Done</button>
+      </header>
+      <div class="group">
+        <p class="label">Reference pitch</p>
+        <div class="ref">
+          <button class="step" data-step="-1" aria-label="Lower reference">−</button>
+          <span class="ref-val">A4 <b id="refHz">440</b> Hz</span>
+          <button class="step" data-step="1" aria-label="Raise reference">+</button>
+          <button class="reset" id="refReset">Reset</button>
+        </div>
+      </div>
+      <div class="group">
+        <p class="label">In-tune tolerance</p>
+        <div class="seg" id="tolerance"></div>
+      </div>
+      <div class="group">
+        <p class="label">Keep screen awake while listening</p>
+        <div class="seg" id="awake"></div>
+      </div>
+      <div class="group">
+        <p class="label">Appearance</p>
+        <div class="seg" id="theme"></div>
+      </div>
+      <button class="sheet-done" id="installSetting" hidden>Add to home screen</button>
+    </div>
+  </section>
+
+  <script src="app.js"></script>
+</body>
+</html>

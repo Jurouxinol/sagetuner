@@ -1,0 +1,25 @@
+{
+  "name": "sagetuner",
+  "short_name": "sagetuner",
+  "description": "A free tuner for guitar, bass and ukulele. No download, works offline.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#F2F1EF",
+  "theme_color": "#F2F1EF",
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
